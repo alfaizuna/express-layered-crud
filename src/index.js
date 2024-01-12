@@ -35,6 +35,16 @@ app.post("/products", async (req, res) => {
     });
 })
 
+app.get("/products/:id", async (req, res) => {
+    const id = req.params.id; //string
+    await prisma.product.delete({
+        where: {
+            id: parseInt(id)
+        }
+    });
+    res.send("product deleted")
+})
+
 app.listen(PORT, () => {
     console.log("express api running in port = " + PORT)
 })
