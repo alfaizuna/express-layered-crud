@@ -19,6 +19,19 @@ app.get("/products", async (req, res) => {
     res.send(products);
 })
 
+app.get("/products/:id", async (req, res) => {
+    const productId = req.params.id; //string
+    const product = await prisma.product.findUnique({
+        where: {
+            id: parseInt(productId)
+        }
+    });
+    if (!product) {
+        return res.status(404).send("product not found!");
+    }
+    res.send(product);
+})
+
 app.post("/products", async (req, res) => {
     const newProduct = req.body;
     const products = await prisma.product.create({
@@ -91,7 +104,6 @@ app.patch("/products/:id", async (req, res) => {
         message: "product has been updated"
     });
 })
-
 
 app.listen(PORT, () => {
     console.log("express api running in port = " + PORT)
