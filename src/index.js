@@ -6,10 +6,6 @@ const PORT = process.env.PORT;
 const productController = require("./products/product.controller");
 app.use(express.json());
 
-app.get("/api", (req, res) => {
-    res.send("Hello World nodemon")
-})
-
 app.use("/products", productController);
 
 app.listen(PORT, () => {

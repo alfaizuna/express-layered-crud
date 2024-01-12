@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require("../database");
-const {getAllProducts} = require("../products/product.service");
+const {
+    getAllProducts,
+    getProductById
+} = require("../products/product.service");
 
 router.get("/", async (req, res) => {
     const products = await getAllProducts();
@@ -9,16 +12,13 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-    const productId = req.params.id; //string
-    const product = await prisma.product.findUnique({
-        where: {
-            id: parseInt(productId)
-        }
-    });
-    if (!product) {
-        return res.status(404).send("product not found!");
+    try {
+        const productId = parseInt(req.params.id);
+        const product = await getProductById(productId);
+        res.send(product);
+    } catch (err) {
+        res.status(400).send(err.message);
     }
-    res.send(product);
 })
 
 router.post("/", async (req, res) => {
