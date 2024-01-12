@@ -45,6 +45,32 @@ app.get("/products/:id", async (req, res) => {
     res.send("product deleted")
 })
 
+app.put("/products/:id", async (req, res) => {
+    const id = req.params.id; //string
+    const productData = req.body;
+
+    if (!(productData.name && productData.description && productData.price && productData.image)) {
+        return res.status(400).send("some field data is missing");
+    }
+
+    const product = await prisma.product.update({
+        where: {
+            id: parseInt(id)
+        },
+        data: {
+            name: productData.name,
+            price: productData.price,
+            description: productData.description,
+            image: productData.image
+        }
+    });
+
+    res.send({
+        body: product,
+        message: "product has been updated"
+    });
+})
+
 app.listen(PORT, () => {
     console.log("express api running in port = " + PORT)
 })
