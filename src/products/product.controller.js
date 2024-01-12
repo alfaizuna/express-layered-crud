@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const prisma = require("../database");
+const {getAllProducts} = require("../products/product.service");
 
 router.get("/", async (req, res) => {
-    const products = await prisma.product.findMany();
+    const products = await getAllProducts();
     res.send(products);
 })
 
