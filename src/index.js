@@ -1,12 +1,14 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
-const { PrismaClient } = require('@prisma/client');
+const {PrismaClient} = require('@prisma/client');
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 const PORT = process.env.PORT;
+
+app.use(express.json());
 
 app.get("/api", (req, res) => {
     res.send("Hello World nodemon")
