@@ -29,7 +29,10 @@ app.post("/products", async (req, res) => {
             image: newProduct.image
         }
     });
-    res.status(201).send("create new product success");
+    res.status(201).send({
+        body: products,
+        message: "create new product success"
+    });
 })
 
 app.listen(PORT, () => {
