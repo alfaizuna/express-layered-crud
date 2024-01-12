@@ -5,6 +5,7 @@ const {
     getAllProducts,
     getProductById
 } = require("../products/product.service");
+const {createProduct} = require("./product.service");
 
 router.get("/", async (req, res) => {
     const products = await getAllProducts();
@@ -22,19 +23,16 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-    const newProduct = req.body;
-    const products = await prisma.product.create({
-        data: {
-            name: newProduct.name,
-            price: newProduct.price,
-            description: newProduct.description,
-            image: newProduct.image
-        }
-    });
-    res.status(201).send({
-        body: products,
-        message: "create new product success"
-    });
+    try {
+        const newProductData = req.body;
+        const products = await createProduct(newProductData);
+        res.status(201).send({
+            body: products,
+            message: "create new product success"
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 })
 
 router.get("/:id", async (req, res) => {
@@ -72,6 +70,7 @@ router.put("/:id", async (req, res) => {
         message: "product has been updated"
     });
 })
+
 router.patch("/:id", async (req, res) => {
     const id = req.params.id; //string
     const productData = req.body;
