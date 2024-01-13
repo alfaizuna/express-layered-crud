@@ -26,9 +26,9 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const newProductData = req.body;
-        const products = await createProduct(newProductData);
+        const product = await createProduct(newProductData);
         res.status(201).send({
-            body: products,
+            body: product,
             message: "create new product success"
         });
     } catch (error) {

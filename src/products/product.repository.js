@@ -12,7 +12,19 @@ const findProductById = async (productId) => {
     });
 }
 
+const createProduct = async (newProductData) => {
+    return prisma.product.create({
+        data: {
+            name: newProductData.name,
+            price: newProductData.price,
+            description: newProductData.description,
+            image: newProductData.image
+        }
+    });
+}
+
 module.exports = {
     findProducts,
-    findProductById
+    findProductById,
+    createProduct
 }

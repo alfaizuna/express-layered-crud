@@ -14,14 +14,14 @@ const getProductById = async (productId) => {
 }
 
 const createProduct = async (newProductData) => {
-    return prisma.product.create({
-        data: {
-            name: newProductData.name,
-            price: newProductData.price,
-            description: newProductData.description,
-            image: newProductData.image
-        }
-    });
+    if (!(newProductData.name
+        && newProductData.description
+        && newProductData.price
+        && newProductData.image)
+    ) {
+        throw Error("some field data is missing");
+    }
+    return createProduct(newProductData);
 }
 
 const deleteProductById = async (productId) => {
