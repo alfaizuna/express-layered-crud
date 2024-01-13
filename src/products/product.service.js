@@ -1,16 +1,12 @@
 const prisma = require("../database");
-const {findProducts} = require("./product.repository");
+const {findProducts, findProductById} = require("./product.repository");
 
 const getAllProducts = async () => {
-    return findProducts;
+    return findProducts();
 }
 
 const getProductById = async (productId) => {
-    const product = await prisma.product.findUnique({
-        where: {
-            id: productId
-        }
-    });
+    const product = await findProductById(productId);
     if (!product) {
         throw Error("product not found")
     }
