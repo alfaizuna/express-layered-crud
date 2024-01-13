@@ -3,9 +3,10 @@ const router = express.Router();
 const prisma = require("../database");
 const {
     getAllProducts,
-    getProductById
-} = require("../products/product.service");
-const {createProduct} = require("./product.service");
+    getProductById,
+    deleteProductById,
+    createProduct
+} = require("./product.service");
 
 router.get("/", async (req, res) => {
     const products = await getAllProducts();
@@ -35,14 +36,14 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.get("/:id", async (req, res) => {
-    const id = req.params.id; //string
-    await prisma.product.delete({
-        where: {
-            id: parseInt(id)
-        }
-    });
-    res.send("product deleted")
+router.delete("/:id", async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        await deleteProductById(id);
+        res.send("product deleted");
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 })
 
 router.put("/:id", async (req, res) => {
