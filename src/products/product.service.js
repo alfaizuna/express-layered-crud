@@ -1,7 +1,8 @@
 const prisma = require("../database");
+const {findProducts} = require("./product.repository");
 
 const getAllProducts = async () => {
-    return prisma.product.findMany();
+    return findProducts;
 }
 
 const getProductById = async (productId) => {
