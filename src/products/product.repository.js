@@ -12,7 +12,7 @@ const findProductById = async (productId) => {
     });
 }
 
-const createProduct = async (newProductData) => {
+const createNewProduct = async (newProductData) => {
     return prisma.product.create({
         data: {
             name: newProductData.name,
@@ -23,8 +23,17 @@ const createProduct = async (newProductData) => {
     });
 }
 
+const deleteProduct = async (productId) => {
+    return prisma.product.delete({
+        where: {
+            id: productId
+        }
+    });
+}
+
 module.exports = {
     findProducts,
     findProductById,
-    createProduct
+    createNewProduct,
+    deleteProduct
 }

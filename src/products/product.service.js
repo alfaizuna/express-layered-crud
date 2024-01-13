@@ -1,5 +1,5 @@
 const prisma = require("../database");
-const {findProducts, findProductById} = require("./product.repository");
+const {findProducts, findProductById, createNewProduct, deleteProduct} = require("./product.repository");
 
 const getAllProducts = async () => {
     return findProducts();
@@ -21,18 +21,15 @@ const createProduct = async (newProductData) => {
     ) {
         throw Error("some field data is missing");
     }
-    return createProduct(newProductData);
+    return createNewProduct(newProductData);
 }
 
 const deleteProductById = async (productId) => {
     const product = await getProductById(productId);
-    if (product) {
-        return prisma.product.delete({
-            where: {
-                id: productId
-            }
-        });
+    if (!product) {
+        throw Error("product not found")
     }
+    return deleteProduct(productId);
 }
 
 
