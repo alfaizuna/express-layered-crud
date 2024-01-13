@@ -38,9 +38,51 @@ const deleteProductById = async (productId) => {
     }
 }
 
+
+const updateProductByPut = async (productId, productData) => {
+    if (!(productData.name
+        && productData.description
+        && productData.price
+        && productData.image)
+    ) {
+        throw Error("some field data is missing");
+    }
+
+    const product = await prisma.product.update({
+        where: {
+            id: productId
+        },
+        data: {
+            name: productData.name,
+            price: productData.price,
+            description: productData.description,
+            image: productData.image
+        }
+    });
+    return product;
+}
+
+const updateProductByPatch = async (productId, productData) => {
+    const product = await prisma.product.update({
+        where: {
+            id: productId
+        },
+        data: {
+            name: productData.name,
+            price: productData.price,
+            description: productData.description,
+            image: productData.image
+        }
+    });
+    return product;
+}
+
+
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
-    deleteProductById
+    deleteProductById,
+    updateProductByPut,
+    updateProductByPatch
 }

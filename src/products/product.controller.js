@@ -5,7 +5,7 @@ const {
     getAllProducts,
     getProductById,
     deleteProductById,
-    createProduct
+    createProduct, updateProductByPut
 } = require("./product.service");
 
 router.get("/", async (req, res) => {
@@ -47,51 +47,31 @@ router.delete("/:id", async (req, res) => {
 })
 
 router.put("/:id", async (req, res) => {
-    const id = req.params.id; //string
-    const productData = req.body;
-
-    if (!(productData.name && productData.description && productData.price && productData.image)) {
-        return res.status(400).send("some field data is missing");
+    try {
+        const id = req.params.id;
+        const productData = req.body;
+        const product = await updateProductByPut(parseInt(id), productData);
+        res.send({
+            body: product,
+            message: "product has been updated"
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
     }
-
-    const product = await prisma.product.update({
-        where: {
-            id: parseInt(id)
-        },
-        data: {
-            name: productData.name,
-            price: productData.price,
-            description: productData.description,
-            image: productData.image
-        }
-    });
-
-    res.send({
-        body: product,
-        message: "product has been updated"
-    });
 })
 
 router.patch("/:id", async (req, res) => {
-    const id = req.params.id; //string
-    const productData = req.body;
-
-    const product = await prisma.product.update({
-        where: {
-            id: parseInt(id)
-        },
-        data: {
-            name: productData.name,
-            price: productData.price,
-            description: productData.description,
-            image: productData.image
-        }
-    });
-
-    res.send({
-        body: product,
-        message: "product has been updated"
-    });
+    try {
+        const id = req.params.id;
+        const productData = req.body;
+        const product = await updateProductByPut(parseInt(id), productData);
+        res.send({
+            body: product,
+            message: "product has been updated"
+        });
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 })
 
 module.exports = router;
