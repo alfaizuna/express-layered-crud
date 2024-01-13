@@ -1,5 +1,5 @@
 const prisma = require("../database");
-const {findProducts, findProductById, createNewProduct, deleteProduct} = require("./product.repository");
+const {findProducts, findProductById, createNewProduct, deleteProduct, updateProduct} = require("./product.repository");
 
 const getAllProducts = async () => {
     return findProducts();
@@ -41,34 +41,11 @@ const updateProductByPut = async (productId, productData) => {
     ) {
         throw Error("some field data is missing");
     }
-
-    const product = await prisma.product.update({
-        where: {
-            id: productId
-        },
-        data: {
-            name: productData.name,
-            price: productData.price,
-            description: productData.description,
-            image: productData.image
-        }
-    });
-    return product;
+    return updateProduct(productId, productData);
 }
 
 const updateProductByPatch = async (productId, productData) => {
-    const product = await prisma.product.update({
-        where: {
-            id: productId
-        },
-        data: {
-            name: productData.name,
-            price: productData.price,
-            description: productData.description,
-            image: productData.image
-        }
-    });
-    return product;
+    return updateProduct(productId, productData);
 }
 
 
